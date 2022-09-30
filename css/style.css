@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+    padding: 0 100px;
+}
+
+header {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+header svg {
+    margin-top: 20px;
+}
+
+header h1 {
+    padding: 0;
+    color: #D04F4F;
+    font-size: 36px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+#recipes-search {
+    height: 50px;
+    width: 100%;
+    background-color: #E7E7E7;
+    border: none;
+    border-radius: 5px;
+    padding-left: 20px;
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    position: relative;
+}
+
+#recipes-search::placeholder {
+    opacity: 25%;
+    font-weight: 400;
+}
+
+#recipes-search + button {
+    position: absolute;
+    right: 101px;
+    width: auto;
+    height: 50px;
+    cursor: pointer;
+    background-color: #E7E7E7;
+    color: black;
+}
+
+form button {
+    height: 37px;
+    width: 107px;
+    background-color: #3282F7;
+    border-radius: 5px;
+    color: #FFF;
+    padding: 5px 10px;
+    border: none;
+    margin-bottom: 15px;
+    font-family: 'Lato', serif;
+}
+
+#tags {
+    margin-top: 25px;
+}
+
+form button span {
+    padding-right: 10px;
+    font-weight: 400;
+}
+
+form fieldset {
+    border: none;
+    padding: 0;
+    height: 69px;
+    display: flex;
+    margin-left: 0;
+    margin-bottom: 25px;
+}
+
+form fieldset div {
+    margin-right: 15px;
+}
+
+form fieldset label {
+    color: #FFFFFF;
+    display: block;
+    border-radius: 5px;
+    border: none;
+    padding-right: 15px;
+    height: 100%;
+}
+
+form fieldset label input {
+    border: none;
+    color: #FFFFFF;
+    padding: 5px 19px;
+    height: 100%;
+    width: calc(100% - 26px);
+    margin-right: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-family: Lato, serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    min-width: calc(150px - 26px);;
+}
+
+form fieldset label input::placeholder {
+    color: white;
+}
+
+form fieldset div ul {
+    padding: 19px 26px 19px 19px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 2;
+    position: relative;
+    font-family: Lato, serif;
+    line-height: 30px;
+    letter-spacing: 0;
+
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0 123px;
+}
+
+form fieldset div ul li {
+    width: fit-content;
+    font-weight: 200;
+    font-size: 15px;
+}
+
+form fieldset div ul a {
+    color: #FFFFFF;
+}
+
+#search-ingredients, label[for="search-ingredients"], label[for="search-ingredients"] + ul {
+    background-color: #3282F7;
+}
+
+#search-appliances, label[for="search-appliances"], label[for="search-appliances"] + ul {
+    background-color: #68D9A4;
+}
+
+#search-ustensils, label[for="search-ustensils"], label[for="search-ustensils"] + ul {
+    background-color: #ED6454;
+}
+
+/* Recipes section */
+
+#recipes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 364px);
+    grid-gap: 50px;
+}
+
+article {
+    background-color: #E7E7E7;
+    border-radius: 5px;
+}
+
+article figure {
+    height: 100%;
+}
+
+article figure img {
+    height: calc(100% - 176px);
+    width: 100%;
+    background-color: gray;
+}
+
+article figure figcaption {
+    height: 176px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+article figure figcaption div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: Lato, serif;
+}
+
+article figcaption h4 {
+    font-family: 'Lato', serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+article figcaption ul {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 14px;
+    width: 50%;
+}
+
+article figcaption p {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 100%;
+    width: 50%;
+    max-height: 100px;
+}
+
+article figcaption i {
+    padding-right: 5px;
+}
+
+article figcaption div:nth-of-type(1) {
+    font-family: 'Lato', serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.placeholderOpacityOn::placeholder {
+    opacity: 0.5;
+}
+
+.fontQuantityUnits {
+    font-family: 'Lato', serif;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+}
