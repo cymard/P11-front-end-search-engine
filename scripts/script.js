@@ -1,5 +1,5 @@
 let headers = {method: 'GET', headers: {"Content-Type": "text/plain;charset=UTF-8"}, mode: 'cors', cache: 'default'}
-fetch('./scripts/recipes.json', headers)
+fetch('../data/recipes.json', headers)
     .then((res) => res.json())
     .then(function (data) {
         console.log(data.recipes)
