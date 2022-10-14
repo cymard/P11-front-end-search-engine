@@ -1,17 +1,15 @@
-import ModelRecipe from '../model/ModelRecipe.js';
-import ViewRecipe from '../view/ViewRecipe.js';
-
 class ControllerRecipe {
     constructor(model, view) {
         this.model = model;
         this.view = view;
 
         this.model.addSubscriber('update', (data) => {
-            view.render(data)
+            this.view.render(data)
         })
         this.view.addSubscriber('search', (data) => {
-            model.search(data);
+            this.model.setSearch(data);
         });
+        this.view.recipesSearchListener();
     }
 
     start() {

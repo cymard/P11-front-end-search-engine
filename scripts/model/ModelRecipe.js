@@ -9,7 +9,6 @@ class ModelRecipe extends Publisher {
     }
 
     getRecipes() {
-        console.log(this.recipes)
         return this.recipes;
     }
 
@@ -23,7 +22,7 @@ class ModelRecipe extends Publisher {
         */
     }
 
-    search(search) {
+    setSearch(search) {
         this.search = search;
         this.filtered();
     }
@@ -31,9 +30,13 @@ class ModelRecipe extends Publisher {
     filtered() {
         this.filteredRecipes = this.recipes;
         if (this.search !== '') {
-            // on filter
-            // on créé tableau
-            // on enregistre ce tableau dans filteredrecipe
+            let filteredDataRecipe = [];
+            this.recipes.forEach((recipe) => {
+                if(recipe.name.toLowerCase().startsWith(this.search.toLowerCase())) {
+                    filteredDataRecipe.push(recipe);
+                }
+            })
+            this.filteredRecipes = filteredDataRecipe;
         }
         this.updatedChange();
     }

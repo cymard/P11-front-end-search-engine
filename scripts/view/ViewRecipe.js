@@ -1,7 +1,9 @@
-import Subscriber from "./Subscriber.js";
 import Publisher from "../model/Publisher.js";
 
 class ViewRecipe extends Publisher {
+    constructor() {
+        super();
+    }
     __createElement(tag, parentElement) {
         let newElement = document.createElement(tag);
         parentElement.append(newElement);
@@ -10,14 +12,22 @@ class ViewRecipe extends Publisher {
 
     render({recipes}) {
         console.log(recipes)
-
+        this.clearView();
         recipes.forEach(recipe => {
             this.__createOneRecipe(recipe)
         });
 
         this.__displayRowsRecipes(recipes)
+    }
 
+    clearView() {
+        this.__removeAllChildNodes(document.getElementById('recipes'));
+    }
 
+    __removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
     }
 
     __createOneRecipe(recipe) {
@@ -103,6 +113,13 @@ class ViewRecipe extends Publisher {
         // définir le nombre de rows
         const divRecipes = document.querySelector('#recipes');
         divRecipes.style.gridTemplateRows = 'repeat(' + Math.ceil(recipesData.length / 3) + ',364px)'
+    }
+
+    recipesSearchListener() {
+        document.getElementById('recipes-search').addEventListener('change', (e) => {
+            this.notify('search', e.target.value )
+            console.log(e.target.value);
+        })
     }
 }
 

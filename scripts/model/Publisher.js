@@ -4,8 +4,6 @@ class Publisher {
     }
 
     addSubscriber(name, subscriber) {
-        console.log(name)
-        console.log(subscriber)
         let subscribers = this.subscribers.get(name);
         if (!subscribers) {
             subscribers = [];
@@ -51,6 +49,16 @@ class Publisher {
                 */
 
     }
+    // addSubscriber(name, subscriber) {
+    //     let subscribers = this.subscribers.get(name);
+    //     if (!subscribers) {
+    //         subscribers = [];
+    //         this.subscribers.set(name, subscriber)
+    //     }
+    //
+    //     subscribers.push(subscriber);
+    //     console.log(this.subscribers)
+    // }
 
     /*
         getSubscribers() {
