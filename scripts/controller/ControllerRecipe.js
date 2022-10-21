@@ -10,6 +10,7 @@ class ControllerRecipe {
             this.model.setSearch(data);
         });
         this.view.recipesSearchListener();
+        this.view.dropdownFunctionning();
     }
 
     start() {

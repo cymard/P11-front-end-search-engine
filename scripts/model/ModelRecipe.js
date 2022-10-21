@@ -6,6 +6,10 @@ class ModelRecipe extends Publisher {
         this.recipes = [];
         this.filteredRecipes = [];
         this.search = '';
+        this.ingredients = [];
+        this.appliances = [];
+        this.ustensils = [];
+
     }
 
     getRecipes() {
@@ -15,11 +19,6 @@ class ModelRecipe extends Publisher {
     setRecipes(recipesData) {
         this.recipes = recipesData;
         this.filtered();
-        /*
-        recipesData.forEach((recipe) => {
-            this.__setOneRecipe(recipe);
-        })
-        */
     }
 
     setSearch(search) {

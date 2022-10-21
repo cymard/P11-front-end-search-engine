@@ -4,6 +4,7 @@ class ViewRecipe extends Publisher {
     constructor() {
         super();
     }
+
     __createElement(tag, parentElement) {
         let newElement = document.createElement(tag);
         parentElement.append(newElement);
@@ -11,10 +12,13 @@ class ViewRecipe extends Publisher {
     }
 
     render({recipes}) {
-        console.log(recipes)
         this.clearView();
+        let allIngredients = [];
+        let allAppliances = [];
+        let allUstensils = [];
+
         recipes.forEach(recipe => {
-            this.__createOneRecipe(recipe)
+            this.__createOneRecipe(recipe, allIngredients, allAppliances, allUstensils)
         });
 
         this.__displayRowsRecipes(recipes)
@@ -22,6 +26,10 @@ class ViewRecipe extends Publisher {
 
     clearView() {
         this.__removeAllChildNodes(document.getElementById('recipes'));
+        // clear dropdowns data nodes
+        this.__removeAllChildNodes(document.querySelector('label[for=search-ingredients] + ul'));
+        this.__removeAllChildNodes(document.querySelector('label[for=search-appliances] + ul'));
+        this.__removeAllChildNodes(document.querySelector('label[for=search-ustensils] + ul'));
     }
 
     __removeAllChildNodes(parent) {
@@ -30,10 +38,7 @@ class ViewRecipe extends Publisher {
         }
     }
 
-    __createOneRecipe(recipe) {
-        let allIngredients = [];
-        let allAppliances = [];
-        let allUstensils = [];
+    __createOneRecipe(recipe, allIngredients, allAppliances, allUstensils) {
 
         const divRecipes = document.querySelector('#recipes');
         let article = this.__createElement('article', divRecipes);
@@ -78,14 +83,16 @@ class ViewRecipe extends Publisher {
 
             // afficher dans le dropdown
             // ingrédients
-            if (!allIngredients.includes(ingredient.ingredient)) {
-                allIngredients.push(ingredient.ingredient);
+            if (!allIngredients.includes(ingredient.ingredient.toLowerCase())) {
+                allIngredients.push(ingredient.ingredient.toLowerCase());
+
                 let ulIngredient = document.querySelector('label[for=search-ingredients] + ul')
                 let liIngredient = this.__createElement('li', ulIngredient);
                 let linkIngredient = this.__createElement('a', liIngredient);
                 linkIngredient.setAttribute('href', '#' + ingredient.ingredient);
                 linkIngredient.innerText = ingredient.ingredient;
             }
+
         })
 
         if (!allAppliances.includes(recipe.appliance)) {
@@ -118,8 +125,104 @@ class ViewRecipe extends Publisher {
     recipesSearchListener() {
         document.getElementById('recipes-search').addEventListener('change', (e) => {
             this.notify('search', e.target.value )
-            console.log(e.target.value);
         })
+    }
+
+    dropdownFunctionning() {
+        let inputsSearch = document.querySelectorAll('fieldset div input');
+
+        let displayDropdownData = (element) => {
+            element.classList.add('placeholderOpacityOn');
+
+            let label = element.parentElement;
+            let dataContentUl = label.nextElementSibling;
+            dataContentUl.style.display = 'grid';
+
+            label.style.borderEndStartRadius = 0;
+            label.style.borderEndEndRadius = 0;
+
+            let arrow = element.nextElementSibling;
+            arrow.classList.replace('fa-chevron-down', 'fa-chevron-up');
+        }
+
+        let hideDropdownData = (element) => {
+            element.classList.remove('placeholderOpacityOn');
+
+            let label = element.parentElement;
+            let dataContentUl = label.nextElementSibling;
+            dataContentUl.style.display = 'none';
+
+            label.style.borderEndStartRadius = '5px';
+            label.style.borderEndEndRadius = '5px';
+
+            let arrow = element.nextElementSibling;
+            arrow.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        }
+
+        inputsSearch.forEach(element => {
+
+            element.addEventListener('focusin', (e) => {
+                if (element.id === 'search-ingredients') {
+                    element.placeholder = 'Rechercher un ingrédient';
+                    displayDropdownData(element);
+                }
+
+                if (element.id === 'search-appliances') {
+                    element.placeholder = 'Rechercher un appareil'
+                    displayDropdownData(element);
+                }
+
+                if (element.id === 'search-ustensils') {
+                    element.placeholder = 'Rechercher un ustensile'
+                    displayDropdownData(element);
+                }
+            })
+
+            document.body.addEventListener('click', (e) => {
+                if (document.hasFocus()) {
+                    if (e.target.closest('#' + element.id)) {
+                        return;
+                    }
+
+                    if (e.target.closest('label[for=' + element.id + '] + ul')) {
+                        return;
+                    }
+
+                    if (element.id === 'search-ingredients') {
+                        element.placeholder = 'Ingredients'
+                        hideDropdownData(element);
+                    }
+
+                    if (element.id === 'search-appliances') {
+                        element.placeholder = 'Appareils';
+                        hideDropdownData(element);
+                    }
+
+                    if (element.id === 'search-ustensils') {
+                        element.placeholder = 'Ustensiles';
+                        hideDropdownData(element);
+                    }
+                }
+            })
+
+            // element.addEventListener('focusout', (e) => {
+            //     if(element.id === 'search-ingredients') {
+            //         element.placeholder = 'Ingredients'
+            //         hideDropdownData(element);
+            //     }
+            //
+            //     if(element.id === 'search-appliances') {
+            //         element.placeholder = 'Appareils';
+            //         hideDropdownData(element);
+            //     }
+            //
+            //     if(element.id === 'search-ustensils') {
+            //         element.placeholder = 'Ustensiles';
+            //         hideDropdownData(element);
+            //     }
+            // })
+
+        });
     }
 }
 

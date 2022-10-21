@@ -3,14 +3,8 @@ import ViewRecipe from "./view/ViewRecipe.js";
 import ControllerRecipe from "./controller/ControllerRecipe.js";
 
 const init = () => {
-    // model
-    const modelRecipe = new ModelRecipe();
-    // view
-    const viewRecipe = new ViewRecipe();
-    // controller
-    let controllerRecipe = new ControllerRecipe(modelRecipe, viewRecipe);
+    let controllerRecipe = new ControllerRecipe(new ModelRecipe(), new ViewRecipe());
     controllerRecipe.start();
-    // controller.start
 }
 
 init();
