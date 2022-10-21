@@ -32,6 +32,25 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(document.querySelector('label[for=search-ustensils] + ul'));
     }
 
+    __createTag(name, selectName) {
+        // TODO ne pas créer si le tag existe déjà
+        if(!['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
+            console.log('impossible de créer ce tag')
+            return;
+        }
+        let tagsContainer = document.getElementById('tags');
+        let tagButton = this.__createElement('button', tagsContainer);
+        tagButton.classList.add(selectName+'BackgroundColor')
+        tagButton.addEventListener('click', () => {
+            tagButton.remove();
+        })
+        let tagSpan = this.__createElement('span', tagButton);
+        tagSpan.innerText = name;
+        let xmarkIcone = this.__createElement('i', tagButton);
+        xmarkIcone.classList.add('fa-regular');
+        xmarkIcone.classList.add('fa-circle-xmark');
+    }
+
     __removeAllChildNodes(parent) {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
@@ -89,10 +108,12 @@ class ViewRecipe extends Publisher {
                 let ulIngredient = document.querySelector('label[for=search-ingredients] + ul')
                 let liIngredient = this.__createElement('li', ulIngredient);
                 let linkIngredient = this.__createElement('a', liIngredient);
-                linkIngredient.setAttribute('href', '#' + ingredient.ingredient);
+                linkIngredient.setAttribute('href', '#');
                 linkIngredient.innerText = ingredient.ingredient;
+                linkIngredient.addEventListener('click', () => {
+                    this.__createTag(ingredient.ingredient, 'ingredient')
+                })
             }
-
         })
 
         if (!allAppliances.includes(recipe.appliance)) {
@@ -100,8 +121,11 @@ class ViewRecipe extends Publisher {
             let ulAppliance = document.querySelector('label[for=search-appliances] + ul')
             let liAppliance = this.__createElement('li', ulAppliance);
             let linkAppliance = this.__createElement('a', liAppliance);
-            linkAppliance.setAttribute('href', '#' + recipe.appliance);
+            linkAppliance.setAttribute('href', '#');
             linkAppliance.innerText = recipe.appliance;
+            linkAppliance.addEventListener('click', () => {
+                this.__createTag(recipe.appliance, 'appliance')
+            })
         }
 
         recipe.ustensils.forEach(ustensil => {
@@ -110,8 +134,11 @@ class ViewRecipe extends Publisher {
                 let ulUstensil = document.querySelector('label[for=search-ustensils] + ul');
                 let liUstensil = this.__createElement('li', ulUstensil);
                 let linkUstensil = this.__createElement('a', liUstensil);
-                linkUstensil.setAttribute('href', '#' + ustensil);
+                linkUstensil.setAttribute('href', '#');
                 linkUstensil.innerText = ustensil;
+                linkUstensil.addEventListener('click', () => {
+                    this.__createTag(ustensil, 'ustensil')
+                })
             }
         })
     }
@@ -157,7 +184,7 @@ class ViewRecipe extends Publisher {
 
             let arrow = element.nextElementSibling;
             arrow.classList.replace('fa-chevron-up', 'fa-chevron-down');
-        }
+        };
 
         inputsSearch.forEach(element => {
 
