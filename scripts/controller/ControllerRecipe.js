@@ -9,6 +9,9 @@ class ControllerRecipe {
         this.view.addSubscriber('search', (data) => {
             this.model.setSearch(data);
         });
+        this.view.addSubscriber('tag', (data) => {
+            this.model.setTags(data);
+        })
         this.view.recipesSearchListener();
         this.view.dropdownFunctionning();
     }

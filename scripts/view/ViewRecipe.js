@@ -3,12 +3,23 @@ import Publisher from "../model/Publisher.js";
 class ViewRecipe extends Publisher {
     constructor() {
         super();
+        this.tagIngredients = [];
+        this.tagAppliances = [];
+        this.tagUstensils = [];
     }
 
     __createElement(tag, parentElement) {
         let newElement = document.createElement(tag);
         parentElement.append(newElement);
         return newElement;
+    }
+
+    __notifyTags() {
+        this.notify('tag', {
+            ingredients: this.tagIngredients,
+            ustensils: this.tagUstensils,
+            appliances: this.tagAppliances
+        })
     }
 
     render({recipes}) {
@@ -32,23 +43,71 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(document.querySelector('label[for=search-ustensils] + ul'));
     }
 
+    __removeTagEvent(htmlNode, tagsArray, name) {
+        htmlNode.addEventListener('click', () => {
+            htmlNode.remove();
+            const index = tagsArray.indexOf(name);
+            if (index > -1) { // only splice array when item is found
+                tagsArray.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            this.__notifyTags();
+        })
+    }
+
     __createTag(name, selectName) {
-        // TODO ne pas créer si le tag existe déjà
-        if(!['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
+        let isNecessaryToCreateTag = true;
+        if (!['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
             console.log('impossible de créer ce tag')
             return;
         }
-        let tagsContainer = document.getElementById('tags');
-        let tagButton = this.__createElement('button', tagsContainer);
-        tagButton.classList.add(selectName+'BackgroundColor')
-        tagButton.addEventListener('click', () => {
-            tagButton.remove();
-        })
-        let tagSpan = this.__createElement('span', tagButton);
-        tagSpan.innerText = name;
-        let xmarkIcone = this.__createElement('i', tagButton);
-        xmarkIcone.classList.add('fa-regular');
-        xmarkIcone.classList.add('fa-circle-xmark');
+
+        // Ne pas créer le tag si il existe déjà
+        if(['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
+            this.tagIngredients.forEach((ingredient) => {
+                if(ingredient === name) {
+                    isNecessaryToCreateTag = false;
+                }
+            })
+
+            this.tagAppliances.forEach((appliance) => {
+                if(appliance === name) {
+                    isNecessaryToCreateTag = false;
+                }
+            })
+
+            this.tagUstensils.forEach((ustensil) => {
+                if(ustensil === name) {
+                    isNecessaryToCreateTag = false;
+                }
+            })
+        }
+
+        if(isNecessaryToCreateTag) {
+            let tagsContainer = document.getElementById('tags');
+            let tagButton = this.__createElement('button', tagsContainer);
+            tagButton.classList.add(selectName + 'BackgroundColor')
+
+            if(selectName === 'ingredient') {
+                this.tagIngredients.push(name);
+                this.__removeTagEvent(tagButton, this.tagIngredients, name);
+            }
+            if(selectName === 'appliance') {
+                this.tagAppliances.push(name);
+                this.__removeTagEvent(tagButton, this.tagAppliances, name);
+            }
+            if(selectName === 'ustensil') {
+                this.tagUstensils.push(name);
+                this.__removeTagEvent(tagButton, this.tagUstensils, name);
+            }
+
+            let tagSpan = this.__createElement('span', tagButton);
+            tagSpan.innerText = name;
+            let xmarkIcone = this.__createElement('i', tagButton);
+            xmarkIcone.classList.add('fa-regular');
+            xmarkIcone.classList.add('fa-circle-xmark');
+
+            this.__notifyTags();
+        }
     }
 
     __removeAllChildNodes(parent) {
@@ -78,7 +137,20 @@ class ViewRecipe extends Publisher {
         figcaptionParagraph.innerText = recipe.description;
 
         recipe.ingredients.forEach(ingredient => {
-            // afficher dans les cards
+            // Afficher dans le dropdown
+            if (!allIngredients.includes(ingredient.ingredient.toLowerCase())) {
+                allIngredients.push(ingredient.ingredient.toLowerCase());
+                let ulIngredient = document.querySelector('label[for=search-ingredients] + ul')
+                let liIngredient = this.__createElement('li', ulIngredient);
+                let linkIngredient = this.__createElement('a', liIngredient);
+                linkIngredient.setAttribute('href', '#');
+                linkIngredient.innerText = ingredient.ingredient;
+                linkIngredient.addEventListener('click', () => {
+                    this.__createTag(ingredient.ingredient, 'ingredient');
+                })
+            }
+
+            // Affichage recette cards
             let liDropdown = this.__createElement('li', ulDropdown);
             let linkDropdown = this.__createElement('a', liDropdown);
             let spanFontIngredient = this.__createElement('span', linkDropdown);
@@ -99,21 +171,6 @@ class ViewRecipe extends Publisher {
 
             spanFontIngredient.innerText = ingredient.ingredient + ': ';
             spanFontQuantityUnits.innerText = ingredient.quantity + ' ' + ingredient.unit;
-
-            // afficher dans le dropdown
-            // ingrédients
-            if (!allIngredients.includes(ingredient.ingredient.toLowerCase())) {
-                allIngredients.push(ingredient.ingredient.toLowerCase());
-
-                let ulIngredient = document.querySelector('label[for=search-ingredients] + ul')
-                let liIngredient = this.__createElement('li', ulIngredient);
-                let linkIngredient = this.__createElement('a', liIngredient);
-                linkIngredient.setAttribute('href', '#');
-                linkIngredient.innerText = ingredient.ingredient;
-                linkIngredient.addEventListener('click', () => {
-                    this.__createTag(ingredient.ingredient, 'ingredient')
-                })
-            }
         })
 
         if (!allAppliances.includes(recipe.appliance)) {
@@ -151,7 +208,7 @@ class ViewRecipe extends Publisher {
 
     recipesSearchListener() {
         document.getElementById('recipes-search').addEventListener('change', (e) => {
-            this.notify('search', e.target.value )
+            this.notify('search', e.target.value)
         })
     }
 

@@ -125,7 +125,7 @@ form fieldset div ul {
 
     display: none;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 0 123px;
+    grid-gap: 0 35px;
 }
 
 form fieldset div ul li {
