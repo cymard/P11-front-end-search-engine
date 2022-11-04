@@ -39,7 +39,7 @@ class ModelRecipe extends Publisher {
                 this.filteredRecipes.forEach((recipe) => {
                     // faire le tri en fonction du tagIngredient
                     recipe.ingredients.forEach((ingredient) => {
-                        if (ingredient.ingredient === tagIngredient){
+                        if (ingredient.ingredient === tagIngredient) {
                             filteredDataRecipe.push(recipe)
                         }
                     })
@@ -52,11 +52,11 @@ class ModelRecipe extends Publisher {
             this.tags.appliances.forEach((tagAppliance) => {
                 let filteredRecipes = [];
                 this.filteredRecipes.forEach((filteredRecipe) => {
-                    if(filteredRecipe.appliance === tagAppliance) {
+                    if (filteredRecipe.appliance === tagAppliance) {
                         filteredRecipes.push(filteredRecipe);
                     }
                 })
-                    this.filteredRecipes = filteredRecipes;
+                this.filteredRecipes = filteredRecipes;
             })
         }
 
@@ -65,7 +65,7 @@ class ModelRecipe extends Publisher {
                 let filteredRecipes = [];
                 this.filteredRecipes.forEach((filteredRecipe) => {
                     filteredRecipe.ustensils.forEach((ustensil) => {
-                        if(ustensil === tagUstensil) {
+                        if (ustensil === tagUstensil) {
                             filteredRecipes.push(filteredRecipe);
                         }
                     })
@@ -77,12 +77,13 @@ class ModelRecipe extends Publisher {
         if (this.search !== '') {
             let filteredDataRecipe = [];
             this.filteredRecipes.forEach((recipe) => {
-                if(recipe.name.toLowerCase().startsWith(this.search.toLowerCase())) {
+                if (recipe.name.toLowerCase().startsWith(this.search.toLowerCase())) {
                     filteredDataRecipe.push(recipe);
                 }
             })
             this.filteredRecipes = filteredDataRecipe;
         }
+
         this.updatedChange();
     }
 
@@ -92,11 +93,12 @@ class ModelRecipe extends Publisher {
             recipes: this.filteredRecipes
         });
     }
-/*
-    __setOneRecipe(recipeData) {
-        this.recipes.push(recipeData)
-    }
-*/
+
+    /*
+        __setOneRecipe(recipeData) {
+            this.recipes.push(recipeData)
+        }
+    */
     //
     // removeRecipe(recipeId) {
     //     this.recipes.forEach((recipe, index) => {

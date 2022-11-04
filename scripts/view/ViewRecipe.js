@@ -6,6 +6,9 @@ class ViewRecipe extends Publisher {
         this.tagIngredients = [];
         this.tagAppliances = [];
         this.tagUstensils = [];
+        this.allIngredients = [];
+        this.allAppliances = [];
+        this.allUstensils = [];
     }
 
     __createElement(tag, parentElement) {
@@ -22,14 +25,108 @@ class ViewRecipe extends Publisher {
         })
     }
 
+    displayRecipeIngredientsInDropdown(ingredientSearch) {
+
+        let ulIngredient = document.querySelector('label[for=search-ingredients] + ul');
+        this.__removeAllChildNodes(ulIngredient)
+
+        let searchedIngredients = [];
+        this.allIngredients.forEach((element) => {
+            // trier les ingrédients à afficher dans le dropdown
+            if(element.startsWith(ingredientSearch.value)) {
+                searchedIngredients.push(element)
+            }
+        })
+
+        searchedIngredients.forEach((ingredient) => {
+            let liIngredient = this.__createElement('li', ulIngredient);
+            let linkIngredient = this.__createElement('a', liIngredient);
+            linkIngredient.setAttribute('href', '#');
+            linkIngredient.innerText = ingredient;
+            linkIngredient.addEventListener('click', () => {
+                this.__createTag(ingredient, 'ingredient');
+                ingredientSearch.value = '';
+            })
+        })
+    }
+
+    displayRecipeAppliancesInDropdown(applianceSearch) {
+
+        let ulAppliance = document.querySelector('label[for=search-appliances] + ul');
+        this.__removeAllChildNodes(ulAppliance)
+
+        let searchedAppliances = [];
+        this.allAppliances.forEach((element) => {
+            // trier les appareils à afficher dans le dropdown
+            if(element.startsWith(applianceSearch.value)) {
+                searchedAppliances.push(element)
+            }
+        })
+
+        searchedAppliances.forEach((appliance) => {
+            let liAppliance = this.__createElement('li', ulAppliance);
+            let linkAppliance = this.__createElement('a', liAppliance);
+            linkAppliance.setAttribute('href', '#');
+            linkAppliance.innerText = appliance;
+            linkAppliance.addEventListener('click', () => {
+                this.__createTag(appliance, 'appliance')
+                applianceSearch.value = '';
+            })
+        })
+
+    }
+
+    displayRecipeUstensilsInDropdown(ustensilSearch) {
+
+        let ulUstensil = document.querySelector('label[for=search-ustensils] + ul');
+        this.__removeAllChildNodes(ulUstensil)
+
+        let searchedUstensils = [];
+        this.allUstensils.forEach((element) => {
+            // trier les ustensiles à afficher dans le dropdown
+            if(element.startsWith(ustensilSearch.value)) {
+                searchedUstensils.push(element)
+            }
+        })
+
+        searchedUstensils.forEach((ustensil) => {
+            let ulUstensil = document.querySelector('label[for=search-ustensils] + ul');
+            let liUstensil = this.__createElement('li', ulUstensil);
+            let linkUstensil = this.__createElement('a', liUstensil);
+            linkUstensil.setAttribute('href', '#');
+            linkUstensil.innerText = ustensil;
+            linkUstensil.addEventListener('click', () => {
+                this.__createTag(ustensil, 'ustensil')
+                ustensilSearch.value = '';
+            })
+        })
+
+    }
+
     render({recipes}) {
         this.clearView();
-        let allIngredients = [];
-        let allAppliances = [];
-        let allUstensils = [];
+        this.allIngredients = [];
+        this.allAppliances = [];
+        this.allUstensils = [];
+
+        // init dropdown search
+        let ingredientSearch = document.getElementById('search-ingredients');
+        ingredientSearch.addEventListener('input', () => {
+            this.displayRecipeIngredientsInDropdown(ingredientSearch)
+        })
+
+        let applianceSearch = document.getElementById('search-appliances');
+        applianceSearch.addEventListener('input', () => {
+            this.displayRecipeAppliancesInDropdown(applianceSearch)
+        })
+
+        let ustensilSearch = document.getElementById('search-ustensils');
+        ustensilSearch.addEventListener('input', () => {
+            this.displayRecipeUstensilsInDropdown(ustensilSearch)
+        })
 
         recipes.forEach(recipe => {
-            this.__createOneRecipe(recipe, allIngredients, allAppliances, allUstensils)
+            this.__createOneRecipe(recipe)
         });
 
         this.__displayRowsRecipes(recipes)
@@ -116,7 +213,7 @@ class ViewRecipe extends Publisher {
         }
     }
 
-    __createOneRecipe(recipe, allIngredients, allAppliances, allUstensils) {
+    __createOneRecipe(recipe) {
 
         const divRecipes = document.querySelector('#recipes');
         let article = this.__createElement('article', divRecipes);
@@ -134,12 +231,16 @@ class ViewRecipe extends Publisher {
         timeSpan.innerHTML = recipe.time + ' min';
         let ulDropdown = this.__createElement('ul', secondDiv);
         let figcaptionParagraph = this.__createElement('p', secondDiv);
-        figcaptionParagraph.innerText = recipe.description;
+        if(recipe.description.length > 200) {
+            figcaptionParagraph.innerText = recipe.description.substring(1, 200) + '...';
+        } else {
+            figcaptionParagraph.innerText = recipe.description
+        }
 
         recipe.ingredients.forEach(ingredient => {
-            // Afficher dans le dropdown
-            if (!allIngredients.includes(ingredient.ingredient.toLowerCase())) {
-                allIngredients.push(ingredient.ingredient.toLowerCase());
+            // Afficher ingrédient dans le dropdown
+            if (!this.allIngredients.includes(ingredient.ingredient)) {
+                this.allIngredients.push(ingredient.ingredient);
                 let ulIngredient = document.querySelector('label[for=search-ingredients] + ul')
                 let liIngredient = this.__createElement('li', ulIngredient);
                 let linkIngredient = this.__createElement('a', liIngredient);
@@ -173,8 +274,8 @@ class ViewRecipe extends Publisher {
             spanFontQuantityUnits.innerText = ingredient.quantity + ' ' + ingredient.unit;
         })
 
-        if (!allAppliances.includes(recipe.appliance)) {
-            allAppliances.push(recipe.appliance);
+        if (!this.allAppliances.includes(recipe.appliance)) {
+            this.allAppliances.push(recipe.appliance);
             let ulAppliance = document.querySelector('label[for=search-appliances] + ul')
             let liAppliance = this.__createElement('li', ulAppliance);
             let linkAppliance = this.__createElement('a', liAppliance);
@@ -186,8 +287,8 @@ class ViewRecipe extends Publisher {
         }
 
         recipe.ustensils.forEach(ustensil => {
-            if (!allUstensils.includes(ustensil)) {
-                allUstensils.push(ustensil);
+            if (!this.allUstensils.includes(ustensil)) {
+                this.allUstensils.push(ustensil);
                 let ulUstensil = document.querySelector('label[for=search-ustensils] + ul');
                 let liUstensil = this.__createElement('li', ulUstensil);
                 let linkUstensil = this.__createElement('a', liUstensil);
