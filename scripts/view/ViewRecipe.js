@@ -38,6 +38,12 @@ class ViewRecipe extends Publisher {
             }
         })
 
+        if(searchedIngredients.length === 0) {
+            let para = this.__createElement('p', ulIngredient);
+            para.style.color = '#FFF'
+            para.innerText = 'aucun résultat'
+        }
+
         searchedIngredients.forEach((ingredient) => {
             let liIngredient = this.__createElement('li', ulIngredient);
             let linkIngredient = this.__createElement('a', liIngredient);
@@ -62,6 +68,12 @@ class ViewRecipe extends Publisher {
                 searchedAppliances.push(element)
             }
         })
+
+        if(searchedAppliances.length === 0) {
+            let para = this.__createElement('p', ulAppliance);
+            para.style.color = '#FFF'
+            para.innerText = 'aucun résultat'
+        }
 
         searchedAppliances.forEach((appliance) => {
             let liAppliance = this.__createElement('li', ulAppliance);
@@ -89,6 +101,12 @@ class ViewRecipe extends Publisher {
             }
         })
 
+        if(searchedUstensils.length === 0) {
+            let para = this.__createElement('p', ulUstensil);
+            para.style.color = '#FFF'
+            para.innerText = 'aucun résultat'
+        }
+
         searchedUstensils.forEach((ustensil) => {
             let ulUstensil = document.querySelector('label[for=search-ustensils] + ul');
             let liUstensil = this.__createElement('li', ulUstensil);
@@ -109,17 +127,25 @@ class ViewRecipe extends Publisher {
         this.allAppliances = [];
         this.allUstensils = [];
 
+        if(recipes.length === 0) {
+            let recipesContainer = document.getElementById('recipes');
+            let para = this.__createElement('p', recipesContainer);
+            para.innerText = 'Aucune recette trouvée pour cette recherche.'
+        }
+
         // init dropdown search
         let ingredientSearch = document.getElementById('search-ingredients');
         ingredientSearch.addEventListener('input', () => {
             this.displayRecipeIngredientsInDropdown(ingredientSearch)
         })
 
+        // init appliance search
         let applianceSearch = document.getElementById('search-appliances');
         applianceSearch.addEventListener('input', () => {
             this.displayRecipeAppliancesInDropdown(applianceSearch)
         })
 
+        // init ustensil search
         let ustensilSearch = document.getElementById('search-ustensils');
         ustensilSearch.addEventListener('input', () => {
             this.displayRecipeUstensilsInDropdown(ustensilSearch)
@@ -144,8 +170,8 @@ class ViewRecipe extends Publisher {
         htmlNode.addEventListener('click', () => {
             htmlNode.remove();
             const index = tagsArray.indexOf(name);
-            if (index > -1) { // only splice array when item is found
-                tagsArray.splice(index, 1); // 2nd parameter means remove one item only
+            if (index > -1) {
+                tagsArray.splice(index, 1);
             }
             this.__notifyTags();
         })
@@ -218,7 +244,7 @@ class ViewRecipe extends Publisher {
         const divRecipes = document.querySelector('#recipes');
         let article = this.__createElement('article', divRecipes);
         let figure = this.__createElement('figure', article);
-        let img = this.__createElement('img', figure);
+        this.__createElement('img', figure);
         let figcaption = this.__createElement('figcaption', figure);
         let firstDiv = this.__createElement('div', figcaption);
         let secondDiv = this.__createElement('div', figcaption);
@@ -302,13 +328,12 @@ class ViewRecipe extends Publisher {
     }
 
     __displayRowsRecipes(recipesData) {
-        // définir le nombre de rows
         const divRecipes = document.querySelector('#recipes');
         divRecipes.style.gridTemplateRows = 'repeat(' + Math.ceil(recipesData.length / 3) + ',364px)'
     }
 
     recipesSearchListener() {
-        document.getElementById('recipes-search').addEventListener('change', (e) => {
+        document.getElementById('recipes-search').addEventListener('input', (e) => {
             this.notify('search', e.target.value)
         })
     }
@@ -389,24 +414,6 @@ class ViewRecipe extends Publisher {
                     }
                 }
             })
-
-            // element.addEventListener('focusout', (e) => {
-            //     if(element.id === 'search-ingredients') {
-            //         element.placeholder = 'Ingredients'
-            //         hideDropdownData(element);
-            //     }
-            //
-            //     if(element.id === 'search-appliances') {
-            //         element.placeholder = 'Appareils';
-            //         hideDropdownData(element);
-            //     }
-            //
-            //     if(element.id === 'search-ustensils') {
-            //         element.placeholder = 'Ustensiles';
-            //         hideDropdownData(element);
-            //     }
-            // })
-
         });
     }
 }
