@@ -41,25 +41,39 @@ header h1 {
     font-weight: 400;
 }
 
-#recipes-search + button {
+#recipes-search + button, #recipes-search + #container-icon-search {
     position: absolute;
     right: 101px;
     width: auto;
-    height: 50px;
     cursor: pointer;
     background-color: #E7E7E7;
     color: black;
 }
 
-form button {
+#recipes-search + button {
+    height: 50px;
+}
+
+#recipes-search + #container-icon-search {
+    transform: translateY(35%);
+}
+
+form label #container-icon-search, form button {
     height: 37px;
     border-radius: 5px;
-    color: #FFF;
-    padding: 5px 10px;
     border: none;
     margin-bottom: 15px;
     margin-right: 5px;
     font-family: 'Lato', serif;
+}
+
+form label #container-icon-search {
+    padding-right: 10px;
+}
+
+form button {
+    color: #FFF;
+    padding: 5px 10px;
 }
 
 #tags {

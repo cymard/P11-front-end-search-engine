@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/normalizer.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://kit.fontawesome.com/9dd3a3cdbc.js" crossorigin="anonymous" defer></script>
-    <script type="module" src="scripts/main.js" defer></script>
 </head>
 <body>
 <header>
@@ -22,7 +21,7 @@
     <form>
         <label id="recipes-search-label">
             <input id="recipes-search" placeholder="Rechercher une recette" type="text"/>
-            <button><i class="fa-sharp fa-solid fa-magnifying-glass fa-xl"></i></button>
+            <span id="container-icon-search"><i class="fa-sharp fa-solid fa-magnifying-glass fa-xl"></i></span>
         </label>
         <div id="tags"></div>
         <fieldset>
@@ -51,5 +50,6 @@
     </form>
     <div id="recipes"></div>
 </main>
+<script type="module" src="scripts/main.js"></script>
 </body>
 </html>

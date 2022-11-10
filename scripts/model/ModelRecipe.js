@@ -22,7 +22,6 @@ class ModelRecipe extends Publisher {
     setTags(tags) {
         this.tags = tags;
         this.filtered();
-        console.log(this.tags);
     }
 
     filtered() {
@@ -31,7 +30,7 @@ class ModelRecipe extends Publisher {
         if (this.search !== '') {
             let filteredDataRecipe = [];
             this.filteredRecipes.forEach((recipe) => {
-                if (recipe.name.toLowerCase().startsWith(this.search.toLowerCase())) {
+                if (recipe.name.toLowerCase().includes(this.search.toLowerCase())) {
                     filteredDataRecipe.push(recipe);
                 }
             })
