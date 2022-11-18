@@ -30,14 +30,19 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(ulIngredient)
 
         let searchedIngredients = [];
-        this.allIngredients.forEach((element) => {
-            // trier les ingrédients à afficher dans le dropdown
-            if(element.toLowerCase().includes(ingredientSearch.value.toLowerCase())) {
-                searchedIngredients.push(element)
-            }
-        })
 
-        if(searchedIngredients.length === 0) {
+        if (ingredientSearch === null) {
+            searchedIngredients = this.allAppliances;
+        } else {
+            this.allIngredients.forEach((element) => {
+                // trier les ingrédients à afficher dans le dropdown
+                if (element.toLowerCase().includes(ingredientSearch.value.toLowerCase())) {
+                    searchedIngredients.push(element)
+                }
+            })
+        }
+
+        if (searchedIngredients.length === 0) {
             let para = this.__createElement('p', ulIngredient);
             para.style.color = '#FFF'
             para.innerText = 'aucun résultat'
@@ -61,14 +66,19 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(ulAppliance)
 
         let searchedAppliances = [];
-        this.allAppliances.forEach((element) => {
-            // trier les appareils à afficher dans le dropdown
-            if(element.toLowerCase().includes(applianceSearch.value.toLowerCase())) {
-                searchedAppliances.push(element)
-            }
-        })
 
-        if(searchedAppliances.length === 0) {
+        if (applianceSearch === null) {
+            searchedAppliances = this.allAppliances;
+        } else {
+            this.allAppliances.forEach((element) => {
+                // trier les appareils à afficher dans le dropdown
+                if (element.toLowerCase().includes(applianceSearch.value.toLowerCase())) {
+                    searchedAppliances.push(element)
+                }
+            })
+        }
+
+        if (searchedAppliances.length === 0) {
             let para = this.__createElement('p', ulAppliance);
             para.style.color = '#FFF'
             para.innerText = 'aucun résultat'
@@ -93,14 +103,19 @@ class ViewRecipe extends Publisher {
 
         let searchedUstensils = [];
 
-        this.allUstensils.forEach((element) => {
-            // trier les ustensiles à afficher dans le dropdown
-            if(element.toLowerCase().includes(ustensilSearch.value.toLowerCase())) {
-                searchedUstensils.push(element)
-            }
-        })
 
-        if(searchedUstensils.length === 0) {
+        if (ustensilSearch === null) {
+            searchedUstensils = this.allUstensils;
+        } else {
+            this.allUstensils.forEach((element) => {
+                // trier les ustensiles à afficher dans le dropdown
+                if (element.toLowerCase().includes(ustensilSearch.value.toLowerCase())) {
+                    searchedUstensils.push(element);
+                }
+            })
+        }
+
+        if (searchedUstensils.length === 0) {
             let para = this.__createElement('p', ulUstensil);
             para.style.color = '#FFF';
             para.innerText = 'aucun résultat';
@@ -126,7 +141,7 @@ class ViewRecipe extends Publisher {
         this.allAppliances = [];
         this.allUstensils = [];
 
-        if(recipes.length === 0) {
+        if (recipes.length === 0) {
             let recipesContainer = document.getElementById('recipes');
             let para = this.__createElement('p', recipesContainer);
             para.innerText = 'Aucune recette trouvée pour cette recherche.'
@@ -135,19 +150,31 @@ class ViewRecipe extends Publisher {
         // init dropdown search
         let ingredientSearch = document.getElementById('search-ingredients');
         ingredientSearch.addEventListener('input', () => {
-            this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            if (ingredientSearch.value.length > 2) {
+                this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            } else {
+                this.displayRecipeIngredientsInDropdown(null)
+            }
         })
 
         // init appliance search
         let applianceSearch = document.getElementById('search-appliances');
         applianceSearch.addEventListener('input', () => {
-            this.displayRecipeAppliancesInDropdown(applianceSearch)
+            if (applianceSearch.value.length > 2) {
+                this.displayRecipeAppliancesInDropdown(applianceSearch)
+            } else {
+                this.displayRecipeAppliancesInDropdown(null)
+            }
         })
 
         // init ustensil search
         let ustensilSearch = document.getElementById('search-ustensils');
         ustensilSearch.addEventListener('input', () => {
-            this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            if (ustensilSearch.value.length > 2) {
+                this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            } else {
+                this.displayRecipeUstensilsInDropdown(null)
+            }
         })
 
         recipes.forEach(recipe => {
@@ -184,40 +211,40 @@ class ViewRecipe extends Publisher {
         }
 
         // Ne pas créer le tag si il existe déjà
-        if(['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
+        if (['ingredient', 'appliance', 'ustensil'].includes(selectName)) {
             this.tagIngredients.forEach((ingredient) => {
-                if(ingredient === name) {
+                if (ingredient === name) {
                     isNecessaryToCreateTag = false;
                 }
             })
 
             this.tagAppliances.forEach((appliance) => {
-                if(appliance === name) {
+                if (appliance === name) {
                     isNecessaryToCreateTag = false;
                 }
             })
 
             this.tagUstensils.forEach((ustensil) => {
-                if(ustensil === name) {
+                if (ustensil === name) {
                     isNecessaryToCreateTag = false;
                 }
             })
         }
 
-        if(isNecessaryToCreateTag) {
+        if (isNecessaryToCreateTag) {
             let tagsContainer = document.getElementById('tags');
             let tagButton = this.__createElement('button', tagsContainer);
             tagButton.classList.add(selectName + 'BackgroundColor')
 
-            if(selectName === 'ingredient') {
+            if (selectName === 'ingredient') {
                 this.tagIngredients.push(name);
                 this.__removeTagEvent(tagButton, this.tagIngredients, name);
             }
-            if(selectName === 'appliance') {
+            if (selectName === 'appliance') {
                 this.tagAppliances.push(name);
                 this.__removeTagEvent(tagButton, this.tagAppliances, name);
             }
-            if(selectName === 'ustensil') {
+            if (selectName === 'ustensil') {
                 this.tagUstensils.push(name);
                 this.__removeTagEvent(tagButton, this.tagUstensils, name);
             }
@@ -257,7 +284,7 @@ class ViewRecipe extends Publisher {
         let ulDropdown = this.__createElement('ul', secondDiv);
         let figcaptionParagraph = this.__createElement('p', secondDiv);
 
-        if(recipe.description.length > 200) {
+        if (recipe.description.length > 200) {
             figcaptionParagraph.innerText = recipe.description.substring(1, 200) + '...';
         } else {
             figcaptionParagraph.innerText = recipe.description
@@ -332,8 +359,13 @@ class ViewRecipe extends Publisher {
     }
 
     recipesSearchListener() {
-        document.getElementById('recipes-search').addEventListener('input', (e) => {
-            this.notify('search', e.target.value)
+        let searchBar = document.getElementById('recipes-search');
+        searchBar.addEventListener('input', (e) => {
+            if (searchBar.value.length > 2) {
+                this.notify('search', e.target.value)
+            } else {
+                this.notify('search', null)
+            }
         })
     }
 
@@ -369,7 +401,7 @@ class ViewRecipe extends Publisher {
         };
 
         let noElementInDropdown = (elementsArray, ulDomElement, paraDomElement) => {
-            if(elementsArray.length === 0 && paraDomElement === null) {
+            if (elementsArray.length === 0 && paraDomElement === null) {
                 let para = this.__createElement('p', ulDomElement);
                 para.style.color = '#FFF';
                 para.innerText = 'aucun résultat';
