@@ -79,20 +79,6 @@ class ModelRecipe extends Publisher {
             }
         }
 
-        if (this.tags.ustensils !== undefined) {
-            this.tags.ustensils.forEach((tagUstensil) => {
-                let filteredRecipes = [];
-                this.filteredRecipes.forEach((filteredRecipe) => {
-                    filteredRecipe.ustensils.forEach((ustensil) => {
-                        if (ustensil === tagUstensil) {
-                            filteredRecipes.push(filteredRecipe);
-                        }
-                    })
-                })
-                this.filteredRecipes = filteredRecipes;
-            })
-        }
-
         this.updatedChange();
     }
 

@@ -135,19 +135,37 @@ class ViewRecipe extends Publisher {
         // init dropdown search
         let ingredientSearch = document.getElementById('search-ingredients');
         ingredientSearch.addEventListener('input', () => {
-            this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            if (ingredientSearch.value.length > 3) {
+                this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            }
+
+            if (ingredientSearch.value.length === 0) {
+                this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            }
         })
 
         // init appliance search
         let applianceSearch = document.getElementById('search-appliances');
         applianceSearch.addEventListener('input', () => {
-            this.displayRecipeAppliancesInDropdown(applianceSearch)
+            if (applianceSearch.value.length > 3) {
+                this.displayRecipeAppliancesInDropdown(applianceSearch)
+            }
+
+            if (applianceSearch.value.length === 0) {
+                this.displayRecipeAppliancesInDropdown(applianceSearch)
+            }
         })
 
         // init ustensil search
         let ustensilSearch = document.getElementById('search-ustensils');
         ustensilSearch.addEventListener('input', () => {
-            this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            if (ustensilSearch.value.length > 3) {
+                this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            }
+
+            if(ustensilSearch.value.length === 0) {
+                this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            }
         })
 
         recipes.forEach(recipe => {
@@ -332,8 +350,15 @@ class ViewRecipe extends Publisher {
     }
 
     recipesSearchListener() {
-        document.getElementById('recipes-search').addEventListener('input', (e) => {
-            this.notify('search', e.target.value)
+        let searchBar = document.getElementById('recipes-search');
+        searchBar.addEventListener('input', (e) => {
+            if(searchBar.value.length > 3) {
+                this.notify('search', e.target.value)
+            }
+
+            if(searchBar.value.length === 0) {
+                this.notify('search', e.target.value)
+            }
         })
     }
 
