@@ -30,12 +30,16 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(ulIngredient)
 
         let searchedIngredients = [];
-        this.allIngredients.forEach((element) => {
-            // trier les ingrédients à afficher dans le dropdown
-            if(element.toLowerCase().includes(ingredientSearch.value.toLowerCase())) {
-                searchedIngredients.push(element)
-            }
-        })
+        if (ingredientSearch === null) {
+            searchedIngredients = this.allIngredients;
+        } else {
+            this.allIngredients.forEach((element) => {
+                // trier les ingrédients à afficher dans le dropdown
+                if(element.toLowerCase().includes(ingredientSearch.value.toLowerCase())) {
+                    searchedIngredients.push(element)
+                }
+            })
+        }
 
         if(searchedIngredients.length === 0) {
             let para = this.__createElement('p', ulIngredient);
@@ -61,12 +65,17 @@ class ViewRecipe extends Publisher {
         this.__removeAllChildNodes(ulAppliance)
 
         let searchedAppliances = [];
-        this.allAppliances.forEach((element) => {
-            // trier les appareils à afficher dans le dropdown
-            if(element.toLowerCase().includes(applianceSearch.value.toLowerCase())) {
-                searchedAppliances.push(element)
-            }
-        })
+        if (applianceSearch === null) {
+            searchedAppliances = this.allAppliances;
+        } else {
+            this.allAppliances.forEach((element) => {
+                // trier les appareils à afficher dans le dropdown
+                if(element.toLowerCase().includes(applianceSearch.value.toLowerCase())) {
+                    searchedAppliances.push(element)
+                }
+            })
+        }
+
 
         if(searchedAppliances.length === 0) {
             let para = this.__createElement('p', ulAppliance);
@@ -93,12 +102,16 @@ class ViewRecipe extends Publisher {
 
         let searchedUstensils = [];
 
-        this.allUstensils.forEach((element) => {
-            // trier les ustensiles à afficher dans le dropdown
-            if(element.toLowerCase().includes(ustensilSearch.value.toLowerCase())) {
-                searchedUstensils.push(element)
-            }
-        })
+        if (ustensilSearch === null) {
+            searchedUstensils = this.allUstensils;
+        } else {
+            this.allUstensils.forEach((element) => {
+                // trier les ustensiles à afficher dans le dropdown
+                if (element.toLowerCase().includes(ustensilSearch.value.toLowerCase())) {
+                    searchedUstensils.push(element);
+                }
+            })
+        }
 
         if(searchedUstensils.length === 0) {
             let para = this.__createElement('p', ulUstensil);
@@ -135,36 +148,30 @@ class ViewRecipe extends Publisher {
         // init dropdown search
         let ingredientSearch = document.getElementById('search-ingredients');
         ingredientSearch.addEventListener('input', () => {
-            if (ingredientSearch.value.length > 3) {
+            if (ingredientSearch.value.length > 2) {
                 this.displayRecipeIngredientsInDropdown(ingredientSearch)
-            }
-
-            if (ingredientSearch.value.length === 0) {
-                this.displayRecipeIngredientsInDropdown(ingredientSearch)
+            } else {
+                this.displayRecipeIngredientsInDropdown(null)
             }
         })
 
         // init appliance search
         let applianceSearch = document.getElementById('search-appliances');
         applianceSearch.addEventListener('input', () => {
-            if (applianceSearch.value.length > 3) {
+            if (applianceSearch.value.length > 2) {
                 this.displayRecipeAppliancesInDropdown(applianceSearch)
-            }
-
-            if (applianceSearch.value.length === 0) {
-                this.displayRecipeAppliancesInDropdown(applianceSearch)
+            } else {
+                this.displayRecipeAppliancesInDropdown(null)
             }
         })
 
         // init ustensil search
         let ustensilSearch = document.getElementById('search-ustensils');
         ustensilSearch.addEventListener('input', () => {
-            if (ustensilSearch.value.length > 3) {
+            if (ustensilSearch.value.length > 2) {
                 this.displayRecipeUstensilsInDropdown(ustensilSearch)
-            }
-
-            if(ustensilSearch.value.length === 0) {
-                this.displayRecipeUstensilsInDropdown(ustensilSearch)
+            } else {
+                this.displayRecipeUstensilsInDropdown(null)
             }
         })
 
@@ -350,14 +357,12 @@ class ViewRecipe extends Publisher {
     }
 
     recipesSearchListener() {
-        let searchBar = document.getElementById('recipes-search');
+        let searchBar =document.getElementById('recipes-search');
         searchBar.addEventListener('input', (e) => {
-            if(searchBar.value.length > 3) {
+            if (searchBar.value.length > 2) {
                 this.notify('search', e.target.value)
-            }
-
-            if(searchBar.value.length === 0) {
-                this.notify('search', e.target.value)
+            } else {
+                this.notify('search', null)
             }
         })
     }

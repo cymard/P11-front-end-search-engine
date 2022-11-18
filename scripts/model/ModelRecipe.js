@@ -27,7 +27,7 @@ class ModelRecipe extends Publisher {
     filtered() {
         this.filteredRecipes = this.recipes;
 
-        if (this.search !== '') {
+        if (this.search !== null) {
             let filteredDataRecipe = [];
             for (let i = 0; i < this.filteredRecipes.length ; i++) {
                 if (this.filteredRecipes[i].name.toLowerCase().includes(this.search.toLowerCase())) {
